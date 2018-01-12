@@ -3,29 +3,55 @@ let url = "https://api.nytimes.com/svc/search/v2/articlesearch.json";
 let queryString = '';
 let startYear = 0;
 let endYear = 0;
+let numberOfArticles = 10;
 
 const clearForm = () => {
   $("#search-term").val('');
   $("#select-number").val(1);
   $("#start-year").val('');
   $("#end-year").val('');
+  queryString = '';
+  startYear = 0;
+  endYear = 0;
+  numberOfArticles = 10;
+  url = "https://api.nytimes.com/svc/search/v2/articlesearch.json";
 }
 
 const formatYear = (year) => {
-  year === 2018
+  // is year this year?
+  year === moment().format('YYYY')
+    // yes, so set date string to today's date
     ? year = moment().format('YYYYMMDD')
-    : year = `${year}0101`
+    // no, but is the year equal to the end-year field?
+    : year === $("#end-year").val()
+      // yes, so set the year to the year passed in and the month/day to 12/31
+      ? year = `${year}1231`
+      // no, so set the date to year0101
+      : year = `${year}0101`
   return year;
 }
 
+const appendTitle = (article) => {
+  let headline = '';
+  if (article.document_type === 'article'){
+    if (article.headline.print_headline !== ''){
+      headline = article.headline.print_headline;
+    } else {
+      headline = article.headline.main;
+    }
+  } else {
+    headline = article.headline.main;
+  }
+  console.log(headline);
+  $(".article-list").append(`<h1>${headline}</h1>`);
+}
 
 $("#search-btn").on("click", (e) => {
   e.preventDefault();
 
-  // console.log(`Start year field is ${$("#start-year").val()}; end year field is ${$("#end-year").val()}`)
-  // console.log(`Start year is ${startYear}; end year is ${endYear}`);
-
   queryString = $("#search-term").val();
+  numberOfArticles = $("#select-number").val();
+  console.log(numberOfArticles);
 
   // if start-year field is empty
   !$("#start-year").val()
@@ -41,6 +67,9 @@ $("#search-btn").on("click", (e) => {
     // no? set endYear to a formatted version of the value of end-year
     : endYear = formatYear($("#end-year").val()) 
 
+  // set numberOfArticles to the value of the #select-number field
+
+
   console.log(`Start year is ${startYear}; end year is ${endYear}`);
 
   url += '?' + $.param({
@@ -55,8 +84,12 @@ $("#search-btn").on("click", (e) => {
   $.ajax({
     method: 'GET',
     url: url
-  }).done((result) => {
-    console.log(result.response.docs[0].headline.print_headline);
+  }).done((results) => {
+    console.log(results);
+    for (const result in results.response.docs) {
+      appendTitle(results.response.docs[result]);
+    }
   })
+  clearForm();
 });
 
