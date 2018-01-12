@@ -1,8 +1,15 @@
-
+const key = keyHolder.NYT_KEY;
 let url = "https://api.nytimes.com/svc/search/v2/articlesearch.json";
 let queryString = '';
 let startYear = '';
 let endYear = '';
+
+const clearForm = () => {
+  $("#search-term").val('');
+  $("#select-number").val(1);
+  $("#start-year").val('');
+  $("#end-year").val('');
+}
 
 
 $("#search-btn").on("click", (e) => {
@@ -21,6 +28,7 @@ $("#search-btn").on("click", (e) => {
   });
 
   console.log(url);
+  clearForm();
 
   // $.ajax({
   //   url: url,
