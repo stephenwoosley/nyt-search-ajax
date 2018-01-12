@@ -11,3 +11,9 @@
 .panel-title {
   font-weight: bold;
 }
+.article-list a {
+  cursor: pointer;
+}
+.caps {
+  color: gray;
+}

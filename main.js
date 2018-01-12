@@ -43,11 +43,12 @@ const appendTitle = (article) => {
     headline = article.headline.main;
   }
   console.log(headline);
-  $(".article-list").append(`<h1>${headline}</h1>`);
+  $(".article-list").append(`<div class='well'><h4><a href=${article.web_url}>${headline}</a></h4><p class='caps'>${article.byline.original}</p></div>`);
 }
 
 $("#search-btn").on("click", (e) => {
   e.preventDefault();
+  $(".article-list").empty();
 
   queryString = $("#search-term").val();
   numberOfArticles = $("#select-number").val();
@@ -66,9 +67,6 @@ $("#search-btn").on("click", (e) => {
     ? endYear = formatYear(moment().format('YYYY'))
     // no? set endYear to a formatted version of the value of end-year
     : endYear = formatYear($("#end-year").val()) 
-
-  // set numberOfArticles to the value of the #select-number field
-
 
   console.log(`Start year is ${startYear}; end year is ${endYear}`);
 
