@@ -7,7 +7,7 @@ let numberOfArticles = 10;
 
 const clearForm = () => {
   $("#search-term").val('');
-  $("#select-number").val(1);
+  $("#select-number").val('');
   $("#start-year").val('');
   $("#end-year").val('');
   queryString = '';
@@ -42,17 +42,19 @@ const appendTitle = (article) => {
   } else {
     headline = article.headline.main;
   }
-  console.log(headline);
   $(".article-list").append(`<div class='well'><h4><a href=${article.web_url}>${headline}</a></h4><p class='caps'>${article.byline.original}</p></div>`);
 }
+
+$("#clear-form").on("click", (e) => {
+  e.preventDefault();
+  clearForm();
+})
 
 $("#search-btn").on("click", (e) => {
   e.preventDefault();
   $(".article-list").empty();
 
   queryString = $("#search-term").val();
-  numberOfArticles = $("#select-number").val();
-  console.log(numberOfArticles);
 
   // if start-year field is empty
   !$("#start-year").val()
@@ -68,8 +70,6 @@ $("#search-btn").on("click", (e) => {
     // no? set endYear to a formatted version of the value of end-year
     : endYear = formatYear($("#end-year").val()) 
 
-  console.log(`Start year is ${startYear}; end year is ${endYear}`);
-
   url += '?' + $.param({
     'api-key': key,
     'q': queryString,
@@ -77,17 +77,17 @@ $("#search-btn").on("click", (e) => {
     'end_date': endYear
   });
 
-  console.log(url);
-
   $.ajax({
     method: 'GET',
     url: url
   }).done((results) => {
-    console.log(results);
-    for (const result in results.response.docs) {
-      appendTitle(results.response.docs[result]);
+    numberOfArticles = $("#select-number").val();
+    for (let i = 0; i < numberOfArticles; i++) {
+      appendTitle(results.response.docs[i]);
     }
   })
-  clearForm();
+  queryString = '';
+  startYear = 0;
+  endYear = 0;
 });
 
