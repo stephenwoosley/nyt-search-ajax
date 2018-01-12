@@ -10,6 +10,52 @@
   <link rel="stylesheet" href="./style.css">
 </head>
 <body>
+  <div class="container">
+    <div class="jumbotron jumbotron-primary">
+      <h1>New York Times Article Search</h1>
+    </div>
+    <div class="panel panel-success">
+      <div class="panel-heading">
+          <h1 class="panel-title">Search Parameters</h1>
+      </div>
+      <div class="panel-body">
+        <form role="form">
+          <div class="form-group">
+            <label for="search">Search Term:</label>
+            <input type="text" class="form-control" id="search-term">
+          </div>
+          <div class="form-group">
+            <label for="select-number"># of Articles to Return:</label>
+            <select name="select-number" class="form-control" id="select-number">
+              <option value="1">1</option>
+              <option value="5">5</option>
+              <option value="10">10</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="search">Start Year (Optional)</label>
+            <input type="text" class="form-control" id="start-year">
+          </div>
+          <div class="form-group">
+            <label for="search">End Year (Optional)</label>
+            <input type="text" class="form-control" id="end-year">
+          </div>
+          <button class="btn btn-primary" id="search-btn">Search NYT</button>
+          <button class="btn btn-primary" id="clear-form">Clear Form</button>
+        </form>
+      </div>
+    </div>
+    <div class="panel panel-success">
+      <div class="panel-heading">
+          <h1 class="panel-title">Top Articles</h1>
+      </div>
+      <div class="panel-body">
+        Articles will appear here.
+      </div>
+    </div>
+  </div>
   
+  <script src="https://code.jquery.com/jquery.js"></script>
+  <script src="NYTCode.js"></script>
 </body>
 </html>
